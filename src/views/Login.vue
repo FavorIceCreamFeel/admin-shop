@@ -6,11 +6,9 @@
         <!-- 登录显示页面 行-->
         <h3>SMXR</h3>
         <el-row :gutter="24">
-          <el-col
-            :span="12"
-            :offset="6"
-          >
+          <el-col :span="12" :offset="6">
             <!-- 表单  提交 -->
+            <!--model 绑定对象属性，rules 绑定rules对象，ref="ruleForm" 获取form表单对象， -->
             <el-form
               :model="ruleForm"
               status-icon
@@ -19,24 +17,20 @@
               label-width="100px"
               class="demo-ruleForm"
             >
-              <el-form-item
-                label="账号:"
-                prop="account"
-              >
+              <el-form-item label="账号:" prop="account">
                 <el-input
                   type="text"
                   v-model="ruleForm.account"
                   autocomplete="off"
+                  autofocus
                 ></el-input>
               </el-form-item>
-              <el-form-item
-                label="密码:"
-                prop="pass"
-              >
+              <el-form-item label="密码:" prop="pass">
                 <el-input
                   type="password"
                   v-model="ruleForm.pass"
                   autocomplete="off"
+                  autofocus
                 ></el-input>
               </el-form-item>
               <el-form-item>
@@ -44,8 +38,11 @@
                   type="primary"
                   @click="submitForm('ruleForm')"
                   class="login_button"
-                >登录</el-button>
-                <el-button class="button_sign_up" @click="resetForm('ruleForm')">注册</el-button>
+                  >登录</el-button
+                >
+                <el-button class="button_sign_up" @click="resetForm('ruleForm')"
+                  >注册</el-button
+                >
               </el-form-item>
             </el-form>
           </el-col>
@@ -93,6 +90,18 @@ export default {
         callback();
       }
     };
+    var validateAccount = (rule, value, callback) => {
+      const reg = /^([a-zA-Z0-9]+[-_\.]?)+@[a-zA-Z0-9]+\.[a-z]+$/;
+      if (value === "" || value === null) {
+        callback(new Error("请输入邮箱账户"));
+      } else if (!reg.test(value)) {
+        callback(new Error("请输入正确的邮箱"));
+      }else{
+        // 正常接着往下走
+        callback();
+      }
+
+    };
     return {
       ruleForm: {
         pass: "",
@@ -101,18 +110,26 @@ export default {
         account: "",
       },
       rules: {
-        pass: [{ validator: validatePass, trigger: "blur" }],
-        checkPass: [{ validator: validatePass2, trigger: "blur" }],
+        pass: [{ validator: validatePass, trigger: 'blur' }],
+        checkPass: [{ validator: validatePass2, trigger: 'blur' }],
         age: [{ validator: checkAge, trigger: "blur" }],
-        account: [{}],
+        account: [{ validator: validateAccount, trigger: 'blur' }],
+        // account: [{ validator: (rule,value,callback)=>{
+        //   console.log(rule)
+        // }, trigger: "blur" }],
       },
     };
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      // 可以得到一个boolean 类型的值
+      // var boos = this.$refs.ruleForm.validate()
+      // console.log(boo)
+      // 把Boolean类型的值 传入 箭头函数 进行处理
+      this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          alert("submit!");
+          // alert("submit!");
+          console.log(valid)
         } else {
           console.log("error submit!!");
           return false;
@@ -138,8 +155,9 @@ export default {
 }
 .el-col {
   border: 2px solid #705697;
-  border-radius: 15px;
-  padding: 2% 0 0 0;
+  border-radius: 10px;
+  padding: 1% 0 0 0;
+  padding-top: 2%;
   // margin-top: 2%;
 
   .el-input {
@@ -150,10 +168,10 @@ h3 {
   margin-left: 46%;
   font-family: "Courier New", Courier, monospace;
 }
-.login_button{
-    margin-left: 23%;
+.login_button {
+  margin-left: 23%;
 }
-.button_sign_up{
-    margin-left: 10%;
+.button_sign_up {
+  margin-left: 10%;
 }
 </style>
