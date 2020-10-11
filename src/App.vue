@@ -6,14 +6,12 @@
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
-import About from '@/views/About'
 import Home from '@/views/Home'
 import Login from '@/views/Login'
 
 export default {
   name: 'app',
   components: {
-    About,
     Home,
     Login,
   },
@@ -23,5 +21,4 @@ export default {
 </script>
 
 <style>
-
 </style>
