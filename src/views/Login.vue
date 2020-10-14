@@ -96,11 +96,10 @@ export default {
         callback(new Error("请输入邮箱账户"));
       } else if (!reg.test(value)) {
         callback(new Error("请输入正确的邮箱"));
-      }else{
+      } else {
         // 正常接着往下走
         callback();
       }
-
     };
     return {
       ruleForm: {
@@ -110,10 +109,10 @@ export default {
         account: "",
       },
       rules: {
-        pass: [{ validator: validatePass, trigger: 'blur' }],
-        checkPass: [{ validator: validatePass2, trigger: 'blur' }],
+        pass: [{ validator: validatePass, trigger: "blur" }],
+        checkPass: [{ validator: validatePass2, trigger: "blur" }],
         age: [{ validator: checkAge, trigger: "blur" }],
-        account: [{ validator: validateAccount, trigger: 'blur' }],
+        account: [{ validator: validateAccount, trigger: "blur" }],
         // account: [{ validator: (rule,value,callback)=>{
         //   console.log(rule)
         // }, trigger: "blur" }],
@@ -127,17 +126,22 @@ export default {
       // console.log(boo)
       // 把Boolean类型的值 传入 箭头函数 进行处理
       this.$refs.ruleForm.validate((valid) => {
+        valid=false;
         if (valid) {
-          // alert("submit!");
-          console.log(valid)
+          this.$router.push("/Home");
         } else {
-          console.log("error submit!!");
-          return false;
+          open6();
         }
       });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+    open6() {
+      this.$notify.error({
+        title: "哦！NO",
+        message: "你应该在尝试一下",
+      });
     },
   },
 };
