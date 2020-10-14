@@ -1,76 +1,34 @@
 <template>
   <div id="login_header">
-    <el-container>
-      <!-- main 主页面 -->
-      <el-main>
+    <div class="login_box">
         <!-- 登录显示页面 行-->
         <h3>SMXR</h3>
-        <el-row :gutter="24">
-          <el-col :span="12" :offset="6">
             <!-- 表单  提交 -->
             <!--model 绑定对象属性，rules 绑定rules对象，ref="ruleForm" 获取form表单对象， -->
-            <el-form
-              :model="ruleForm"
-              status-icon
-              :rules="rules"
-              ref="ruleForm"
-              label-width="100px"
-              class="demo-ruleForm"
-            >
+            <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
+              label-width="100px" class="demo-ruleForm" >
+
               <el-form-item label="账号:" prop="account">
-                <el-input
-                  type="text"
-                  v-model="ruleForm.account"
-                  autocomplete="off"
-                  autofocus
-                ></el-input>
+                <el-input class="input_width" type="text" v-model="ruleForm.account" autocomplete="off" autofocus></el-input>
               </el-form-item>
+
               <el-form-item label="密码:" prop="pass">
-                <el-input
-                  type="password"
-                  v-model="ruleForm.pass"
-                  autocomplete="off"
-                  autofocus
-                ></el-input>
+                <el-input class="input_width"  type="password" v-model="ruleForm.pass" autocomplete="off" autofocus></el-input>
               </el-form-item>
-              <el-form-item>
-                <el-button
-                  type="primary"
-                  @click="submitForm('ruleForm')"
-                  class="login_button"
-                  >登录</el-button
-                >
-                <el-button class="button_sign_up" @click="resetForm('ruleForm')"
-                  >注册</el-button
-                >
-              </el-form-item>
+
+              <div  class="form_div">
+                <el-button @click="submitForm('ruleForm')">登录</el-button>
+                <el-button @click="resetForm('ruleForm')">注册</el-button>
+              </div>
             </el-form>
-          </el-col>
-        </el-row>
-      </el-main>
-    </el-container>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   data() {
-    var checkAge = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error("年龄不能为空"));
-      }
-      setTimeout(() => {
-        if (!Number.isInteger(value)) {
-          callback(new Error("请输入数字值"));
-        } else {
-          if (value < 18) {
-            callback(new Error("必须年满18岁"));
-          } else {
-            callback();
-          }
-        }
-      }, 1000);
-    };
+    // 密码校验
     var validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入密码"));
@@ -81,15 +39,7 @@ export default {
         callback();
       }
     };
-    var validatePass2 = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
-      } else if (value !== this.ruleForm.pass) {
-        callback(new Error("两次输入密码不一致!"));
-      } else {
-        callback();
-      }
-    };
+    // 账户校验
     var validateAccount = (rule, value, callback) => {
       const reg = /^([a-zA-Z0-9]+[-_\.]?)+@[a-zA-Z0-9]+\.[a-z]+$/;
       if (value === "" || value === null) {
@@ -104,14 +54,15 @@ export default {
     return {
       ruleForm: {
         pass: "",
-        checkPass: "",
-        age: "",
         account: "",
       },
       rules: {
         pass: [{ validator: validatePass, trigger: "blur" }],
+<<<<<<< HEAD
         checkPass: [{ validator: validatePass2, trigger: "blur" }],
         age: [{ validator: checkAge, trigger: "blur" }],
+=======
+>>>>>>> 0fa48ebdb9b34a50d02ba02d11098ca2944a071d
         account: [{ validator: validateAccount, trigger: "blur" }],
         // account: [{ validator: (rule,value,callback)=>{
         //   console.log(rule)
@@ -128,9 +79,19 @@ export default {
       this.$refs.ruleForm.validate((valid) => {
         valid=false;
         if (valid) {
+<<<<<<< HEAD
           this.$router.push("/Home");
         } else {
           open6();
+=======
+          // alert("submit!");
+          console.log(valid);
+          this.$router.push("/Home");
+        } else {
+          // console.log("error submit!!");
+
+          return false;
+>>>>>>> 0fa48ebdb9b34a50d02ba02d11098ca2944a071d
         }
       });
     },
@@ -150,32 +111,36 @@ export default {
 <style lang="less" scoped>
 #login_header {
   background-color: #f1f1f1;
-  margin-top: -10px;
-  padding-bottom: 28%;
-}
-.grid-content {
-  border-radius: 4px;
-  min-height: 36px;
-}
-.el-col {
-  border: 2px solid #705697;
-  border-radius: 10px;
-  padding: 1% 0 0 0;
-  padding-top: 2%;
-  // margin-top: 2%;
+  height: 100%;
 
-  .el-input {
-    width: 96%;
+  .login_box{
+    width: 400px;
+    height: 260px;
+    background-color:#f1f1f1;
+    border: 1px solid #705697;
+    border-radius: 5px;
+    // 阴影
+    // box-shadow: 0 0 10px #f1f1f1;
+    position: absolute;
+    left: 50%;
+    top: 35%;
+    transform: translate(-50%,-50%);
+
+    h3{
+    text-align:center;
+    }
   }
 }
-h3 {
-  margin-left: 46%;
-  font-family: "Courier New", Courier, monospace;
+.input_width{
+  width: 260px;
 }
-.login_button {
-  margin-left: 23%;
-}
-.button_sign_up {
-  margin-left: 10%;
+.form_div{
+  display:flex;
+   justify-content:center;
+
+  div{
+    margin: 0%;
+    padding: 0%;
+  }
 }
 </style>
