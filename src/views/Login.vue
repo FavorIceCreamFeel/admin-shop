@@ -5,20 +5,21 @@
         <h3>SMXR</h3>
             <!-- 表单  提交 -->
             <!--model 绑定对象属性，rules 绑定rules对象，ref="ruleForm" 获取form表单对象， -->
-            <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
-              label-width="100px" class="demo-ruleForm" >
+            <!-- 3个绑定，绑定表单 ref , 绑定数据  :mode , 绑定rules校验 :rules  -->
+            <el-form ref="login_form" :model="loginForm" :rules="loginFormRules" 
+              status-icon  label-width="100px" class="demo-ruleForm" >
 
               <el-form-item label="账号:" prop="account">
-                <el-input prefix-icon="el-icon-user-solid" class="input_width" type="text" v-model="ruleForm.account" autocomplete="off" autofocus></el-input>
+                <el-input prefix-icon="el-icon-user-solid" class="input_width" type="text" v-model="loginForm.account" autocomplete="off" autofocus></el-input>
               </el-form-item>
 
               <el-form-item label="密码:" prop="pass">
-                <el-input show-password class="input_width" prefix-icon="el-icon-s-goods"  type="password" v-model="ruleForm.pass" autocomplete="off" autofocus></el-input>
+                <el-input show-password class="input_width" prefix-icon="el-icon-s-goods"  type="password" v-model="loginForm.pass" autocomplete="off" autofocus></el-input>
               </el-form-item>
 
               <div  class="form_div">
-                <el-button @click="submitForm('ruleForm')">登录</el-button>
-                <el-button @click="resetForm('ruleForm')">注册</el-button>
+                <el-button @click="submitForm()">登录</el-button>
+                <el-button @click="resetForm()">注册</el-button>
               </div>
             </el-form>
     </div>
@@ -35,7 +36,7 @@ export default {
         callback(new Error("请输入密码"));
       } else {
         if (!reg.test(value)) {
-          callback(new Error("请输入正确6~12位字母+数字的密码"));
+          callback(new Error("请输入正确6~12位字母,数字的密码"));
         }else{
         callback();
         }
@@ -54,11 +55,11 @@ export default {
       }
     };
     return {
-      ruleForm: {
+      loginForm: {
         pass: "",
         account: "",
       },
-      rules: {
+      loginFormRules: {
         pass: [{ validator: validatePass, trigger: "blur" }],
         account: [{ validator: validateAccount, trigger: "blur" }],
         name: [
@@ -72,23 +73,26 @@ export default {
     };
   },
   methods: {
-    submitForm(formName) {
+    submitForm() {
       // 可以得到一个boolean 类型的值  form输入框内是否都有值，或者说都通过了校验
-      // var boos = this.$refs.ruleForm.validate()
-      // console.log(boo)
       // 把Boolean类型的值 传入 箭头函数 进行处理
-      this.$refs.ruleForm.validate((valid) => {
+      this.$refs.login_form.validate(async (valid) => {
+        console.log(this.loginForm.pass+this.loginForm.account)
         if (valid) {
-          this.$router.push("/Home");
-          this.success_open();
+        const result =await this.$axios.post('test22/info');
+ 
+        console.log(result);
+          // this.$router.push("/Home");
+          // this.success_open();
+
         } else {
-          // 要加this.否则识别不了是谁的函数
+          // 要加this.因为是挂在到(vue)原型上的 否则识别不了是谁的函数
           this.login_open();
         } 
       });
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+    resetForm() {
+      this.$refs.login_form.resetFields();
     },
     login_open() {
       this.$notify.error({
