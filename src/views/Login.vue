@@ -77,10 +77,12 @@ export default {
       // 可以得到一个boolean 类型的值  form输入框内是否都有值，或者说都通过了校验
       // 把Boolean类型的值 传入 箭头函数 进行处理
       this.$refs.login_form.validate(async (valid) => {
-        console.log(this.loginForm.pass+this.loginForm.account)
+        console.log(this.loginForm)
         if (valid) {
-        const result =await this.$axios.post('test22/info');
- 
+        const result =await this.$axios.post('vue/signIn',{
+          account:this.loginForm.account,
+          pass:this.loginForm.pass,
+        });
         console.log(result);
           // this.$router.push("/Home");
           // this.success_open();
