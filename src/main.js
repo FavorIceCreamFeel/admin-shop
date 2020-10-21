@@ -8,6 +8,8 @@ import '@/assets/css/main.css'
 
 Vue.config.productionTip = false
 
+Vue.prototype.$qs = qs
+
 new Vue({
   router,
   Plugin,
