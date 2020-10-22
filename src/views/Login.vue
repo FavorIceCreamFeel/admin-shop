@@ -81,28 +81,32 @@ export default {
         if (valid) {
         const result =await this.$axios.post('vue/signIn',this.$qs.stringify(this.loginForm));
         console.log(result);
-          // this.$router.push("/Home");
-          // this.success_open();
-
+          if(result.status===200&&result.data.code===1&&result.data.data!==null){
+            window.sessionStorage.setItem('token', result.data.data)
+            this.$router.push("/Home");
+            this.success_open();
+          }else{
+            this.login_open("我记错了吗？");
+          }
         } else {
           // 要加this.因为是挂在到(vue)原型上的 否则识别不了是谁的函数
-          this.login_open();
+          this.login_open("我记错了吗？");
         } 
       });
     },
     resetForm() {
       this.$refs.login_form.resetFields();
     },
-    login_open() {
+    login_open(msg) {
       this.$notify.error({
-        title: "哦！NO",
-        message: "你应该再尝试下",
+        title: "啊！Σ( ° △ °|||)︴",
+        message: msg,
         duration:'2000'
       });
     },
     success_open() {
         this.$notify({
-          title: 'Success',
+          title: 'Success ♪(^∇^*)',
           message: '你好，登陆成功！',
           type: 'success',
           duration:'2000'
